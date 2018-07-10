@@ -1,35 +1,78 @@
 #include "MIDIUSB.h"
 #include "FastLED.h"
 
-int analogPin = 3;  
-int ledPin = 6;
+//inputs
+int analogIn1 = 3; 
+int analogIn2 = 4;
 
-int val = 0;  
+//outputs
+int pwmLEDout1 = 6;
+int pwmLEDout2 = 7;
+
+int val1 = 0;  
+int val2 = 0;
      
 #define NUM_LEDS    150
-CRGB leds[NUM_LEDS];
+CRGB leds1[NUM_LEDS];
+CRGB leds2[NUM_LEDS];
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
-  pinMode(ledPin, OUTPUT);
-  FastLED.addLeds<WS2812B, 6>(leds, NUM_LEDS);
+  pinMode(pwmLEDout1, OUTPUT);
+  pinMode(pwmLEDout2, OUTPUT);
+  FastLED.addLeds<WS2812B, 6>(leds1, NUM_LEDS);
+  FastLED.addLeds<WS2812B, 7>(leds2, NUM_LEDS);
 }
 
 
-void loop() {  
-  val = analogRead(analogPin);
+void loop()
+{
+ 
   
-  if (val > 100) {
-     //digitalWrite(ledPin, HIGH);
-     FastLED.showColor(CRGB::White);
-     noteOn(0, 48, 100);
+  val1 = analogRead(analogIn1);
+  val2 = analogRead(analogIn2);
+  
+  if (val1 > 100) {
+    //digitalWrite(ledPin, HIGH);
+    //FastLED.showColor(CRGB::White);
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds1[i] = CRGB::White;
+    }
+    
+    noteOn(0, 48, 100);
   } else {
-     //digitalWrite(ledPin, LOW);
-     FastLED.showColor(CRGB::Black);
-     noteOff(0, 48, 100);
+    //digitalWrite(ledPin, LOW);
+    //FastLED.showColor(CRGB::Black);
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds1[i] = CRGB::Black;
+    }
+    
+    noteOff(0, 48, 100);
+  }
+
+  if (val2 > 100) {
+    //digitalWrite(ledPin, HIGH);
+    //FastLED.showColor(CRGB::White);
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds2[i] = CRGB::Green;
+    }
+    
+    noteOn(0, 49, 100);
+  } else {
+    //digitalWrite(ledPin, LOW);
+    //FastLED.showColor(CRGB::Black);
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds2[i] = CRGB::Black;
+    }
+    
+    noteOff(0, 49, 100);
   }
   
-  Serial.println(val);
+  FastLED.show();
+  Serial.println(val1);
+
+  
 }
 
 void noteOn(byte channel, byte pitch, byte velocity) {
