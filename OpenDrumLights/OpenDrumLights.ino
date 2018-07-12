@@ -70,7 +70,9 @@ void loop()
   }
   
   FastLED.show();
-  Serial.println(val1);
+  Serial.print(val1);
+  Serial.print(",");
+  Serial.println(val2);
 
   
 }
