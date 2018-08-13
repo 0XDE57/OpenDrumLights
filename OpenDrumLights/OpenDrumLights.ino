@@ -1,28 +1,38 @@
 #include "MIDIUSB.h"
 #include "FastLED.h"
 
-//inputs
-int analogIn1 = 3; 
-int analogIn2 = 4;
-
-//outputs
-int pwmLEDout1 = 6;
-int pwmLEDout2 = 7;
-
+//piezo inputs
+#define analogIn1 1
+#define analogIn2 2
+#define analogIn3 3
+#define analogIn4 4
 int val1 = 0;  
 int val2 = 0;
-     
-#define NUM_LEDS    150
+int val3 = 0;
+int val4 = 0;
+
+//led outputs
+#define pwmLEDout1 2
+#define pwmLEDout2 3
+#define pwmLEDout3 4
+#define pwmLEDout4 5
+#define NUM_LEDS 150
 CRGB leds1[NUM_LEDS];
 CRGB leds2[NUM_LEDS];
+CRGB leds3[NUM_LEDS];
+CRGB leds4[NUM_LEDS];
 
 void setup()
 {
   Serial.begin(9600);
   pinMode(pwmLEDout1, OUTPUT);
   pinMode(pwmLEDout2, OUTPUT);
-  FastLED.addLeds<WS2812B, 6>(leds1, NUM_LEDS);
-  FastLED.addLeds<WS2812B, 7>(leds2, NUM_LEDS);
+  pinMode(pwmLEDout3, OUTPUT);
+  pinMode(pwmLEDout4, OUTPUT);
+  FastLED.addLeds<WS2812B, pwmLEDout1>(leds1, NUM_LEDS);
+  FastLED.addLeds<WS2812B, pwmLEDout2>(leds2, NUM_LEDS);
+  FastLED.addLeds<WS2812B, pwmLEDout3>(leds3, NUM_LEDS);
+  FastLED.addLeds<WS2812B, pwmLEDout4>(leds4, NUM_LEDS);
 }
 
 
@@ -32,6 +42,8 @@ void loop()
   
   val1 = analogRead(analogIn1);
   val2 = analogRead(analogIn2);
+  val3 = analogRead(analogIn3);
+  val4 = analogRead(analogIn4);
   
   if (val1 > 100) {
     //digitalWrite(ledPin, HIGH);
@@ -68,13 +80,45 @@ void loop()
     
     noteOff(0, 49, 100);
   }
+
+
+if (val3 > 100) {
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds3[i] = CRGB::Red;
+    }   
+    noteOn(0, 50, 100);
+  } else {
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds3[i] = CRGB::Black;
+    }
+    
+    noteOff(0, 50, 100);
+  }
+
+  if (val4 > 100) {
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds4[i] = CRGB::Blue;
+    }
+    
+    noteOn(0, 51, 100);
+  } else {
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds4[i] = CRGB::Black;
+    }
+    
+    noteOff(0, 51, 100);
+  }
   
   FastLED.show();
-  Serial.print(val1);
-  Serial.print(",");
-  Serial.println(val2);
 
   
+  Serial.print(val1);
+  Serial.print(",");
+  Serial.print(val2);
+  Serial.print(",");
+  Serial.print(val3);
+  Serial.print(",");
+  Serial.println(val4); 
 }
 
 void noteOn(byte channel, byte pitch, byte velocity) {
