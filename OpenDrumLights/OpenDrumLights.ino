@@ -6,10 +6,12 @@
 #define analogIn2 2
 #define analogIn3 3
 #define analogIn4 4
+#define threshold 100
 int val1 = 0;  
 int val2 = 0;
 int val3 = 0;
 int val4 = 0;
+
 
 //led outputs
 #define pwmLEDout1 2
@@ -45,7 +47,7 @@ void loop()
   val3 = analogRead(analogIn3);
   val4 = analogRead(analogIn4);
   
-  if (val1 > 100) {
+  if (val1 > threshold) {
     //digitalWrite(ledPin, HIGH);
     //FastLED.showColor(CRGB::White);
     for (int i = 0; i < NUM_LEDS; i++) {
@@ -63,7 +65,7 @@ void loop()
     noteOff(0, 48, 100);
   }
 
-  if (val2 > 100) {
+  if (val2 > threshold) {
     //digitalWrite(ledPin, HIGH);
     //FastLED.showColor(CRGB::White);
     for (int i = 0; i < NUM_LEDS; i++) {
@@ -82,7 +84,7 @@ void loop()
   }
 
 
-if (val3 > 100) {
+if (val3 > threshold) {
     for (int i = 0; i < NUM_LEDS; i++) {
       leds3[i] = CRGB::Red;
     }   
@@ -95,7 +97,7 @@ if (val3 > 100) {
     noteOff(0, 50, 100);
   }
 
-  if (val4 > 100) {
+  if (val4 > threshold) {
     for (int i = 0; i < NUM_LEDS; i++) {
       leds4[i] = CRGB::Blue;
     }
@@ -111,7 +113,7 @@ if (val3 > 100) {
   
   FastLED.show();
 
-  
+   
   Serial.print(val1);
   Serial.print(",");
   Serial.print(val2);

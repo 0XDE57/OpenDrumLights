@@ -14,15 +14,19 @@ An open source reactive drum lighting and midi project.
 #### components
 * Microcontroller: Arduino Due
 * Power supply: 5V-12V @ 3A-5A (depends on LED type and amount)
-	* Must be enough current to power the LED's. In our case we are using WS2812B 
-    Which draw about ~60mA @ 5V per led. Using 5 x 144LED/M (LED per Meter) strips our worst case scenario is 60mA * 144 Led * 5 strips = ~4.3A. Realistic usage is lower as draw is dependent on color, brightness level, and not the full strip was used in each drum due to trimming the strip for the diameter of the drum. A power draw estimate per drum:
+	* Must be enough current to power the LED's. 
+	
+    	> In our case we are using WS2812B which draw about ~60mA @ 5V per led (white & full brightness). Using 5 x 144LED/M (LED per Meter) strips our worst case scenario is 60mA * 144 LED's * 5 strips = ~4.3A. Realistic usage is typically much lower as draw is dependent on color, brightness level, and not the full strip was used in each drum due to trimming the strip for the diameter of the drum. Also during typical usage not all strips are on at the same time. Usually only 1 or 2 as they are triggered. Average draw may look like ~2A at a given time.
+	
+	* A power draw estimate per drum (worst case scenario white color @ full brightness):
     
 	    | Drum Diameter  | LED per meter | Power draw |
 		| ------------- | --------- | --------- |
-		| x" | x | x.xA |
-* Voltage Regulator: 5V @ 3A-5A (depends on LED type and amount)
-	*  We used the LM1084 which limits our current to 5V and can handle up to 5A
-	  **note:** LM1084 has a dropout voltage of 1.5V so recommended 7V power supply minimum. 
+		| x" | x | ~x.xA |
+* Voltage Regulator: 5V @ 3A-5A buck converter 
+	* exact output required will depend on LED type and amount
+	
+    	> **note:** We found in our testing that a linear regulator such as an LM317 or LM1084 is not recommended as they will dissipate excess energy as heat. In our case a 12v supply -> 12V-5V=7v. Power = 7Vx5A = 35W dissipated as heat. Ouch.  
 
 * PER DRUM:
 	* LED Strip
