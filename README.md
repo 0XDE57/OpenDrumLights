@@ -72,6 +72,7 @@ Using microphones instead of Piezoelectric sensors: https://learn.adafruit.com/g
 
 
 ### TODO: DMX support...
+http://playground.arduino.cc/Learning/DMX
 https://playground.arduino.cc/DMX/Ardmx
 
 https://resolume.com/support/en/dmx#using-a-manual-ip
